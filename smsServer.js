@@ -29,6 +29,19 @@ module.exports = function smsServer() {
       await waterData.save();
       console.log('Data saved to database');
 
+      console.log(capacity, volume, depth);
+      if (depth >= 25) {
+        console.log('Depth is greater than or equal to 25. Taking action...');
+        message = "The water level is high, just know that you will die soon if you stay there";
+        sendSMS(message);
+      }else if(depth >=15 && depth <=22){
+        message = "Water levels are moderate but soon you will need to start moving";
+        sendSMS(message);
+      }else {
+        message = "Water levels are low ";
+        sendSMS(message)
+      }
+  
       res.status(200).json({
         status: 'success',
         message: 'Water level data received and saved',
@@ -44,20 +57,6 @@ module.exports = function smsServer() {
   }
 });
 
-     
-
-    console.log(capacity, volume, depth);
-    if (depth >= 25) {
-      console.log('Depth is greater than or equal to 25. Taking action...');
-      message = "The water level is high, just know that you will die soon if you stay there";
-      sendSMS(message);
-    }else if(depth >=15 && depth <=22){
-      message = "Water levels are moderate but soon you will need to start moving";
-      sendSMS(message);
-    }else {
-      message = "Water levels are low ";
-      sendSMS(message)
-    }
 
   // Incoming messages route
   app.post('/incoming-messages', (req, res) => {
